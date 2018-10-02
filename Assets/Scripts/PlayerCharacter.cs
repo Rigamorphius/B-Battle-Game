@@ -8,9 +8,23 @@ public class PlayerCharacter : MonoBehaviour {
     private Rigidbody2D CharacterRigid;
 
     [SerializeField]
- private float Speed = 2;
+    private float accelerationForce = 5;
 
-    private float moveInput;
+    [SerializeField]
+    private ContactFilter2D groundContactFilter;
+
+    [SerializeField]
+    private float jumpForce = 5;
+
+    [SerializeField]
+    private float maxSpeed = 5;
+
+    [SerializeField]
+    private Collider2D groundDetectTrigger;
+
+    private float horizontalInput;
+    private bool onGround;
+    private Collider2D[] groundHitDetection = new Collider2D[20];
 
     // Use this for initialization
     void Start () {
@@ -19,9 +33,11 @@ public class PlayerCharacter : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () {  
         GetMovementInput();
-	}
+        GetJump();
+        IsOnGround();
+    }
 
     private void FixedUpdate()
     {
@@ -29,16 +45,28 @@ public class PlayerCharacter : MonoBehaviour {
     }
 
     private void GetMovementInput() {
-        moveInput = Input.GetAxis("Horizontal");
-
+        horizontalInput = Input.GetAxis("Horizontal");
+        
     }
-    private void Move()
+
+    private void Move() {
+        CharacterRigid.AddForce(Vector2.right * horizontalInput * accelerationForce);
+        Vector2 clampedVelocity = CharacterRigid.velocity;
+        clampedVelocity.x = Mathf.Clamp(CharacterRigid.velocity.x, -maxSpeed, maxSpeed);
+        CharacterRigid.velocity = clampedVelocity;
+    }
+    
+    private void GetJump()
     {
-
+        if (Input.GetButtonDown("Jump") && onGround) {
+            CharacterRigid.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        }
     }
 
-    private void Jump()
-    {
-        //TODO: Make the Character Jump
+    private void IsOnGround() {
+      onGround = groundDetectTrigger.OverlapCollider(groundContactFilter, groundHitDetection) > 0;
+        //Debug.Log("IsOnGround?: " + onGround);
     }
-}
+    
+    }
+
