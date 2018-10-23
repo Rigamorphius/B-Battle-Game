@@ -35,6 +35,14 @@ public class PlayerCharacter : MonoBehaviour
     private Collider2D[] groundHitDetection = new Collider2D[20];
     private Checkpoint currentCheckpoint;
 
+    //Bullet Testing
+    public GameObject BulletLeft, BulletRight;
+    private Vector2 BulletPos;
+    public float fireRate;
+    private float nextFire;
+     private bool facingRight = true;
+     private float velX;
+
     // Use this for initialization
     void Start()
     {
@@ -48,6 +56,7 @@ public class PlayerCharacter : MonoBehaviour
         GetMovementInput();
         GetJump();
         IsOnGround();
+        Shoot();
     }
 
     private void FixedUpdate()
@@ -104,12 +113,51 @@ public class PlayerCharacter : MonoBehaviour
         else {
             transform.position = currentCheckpoint.transform.position;
             CharacterRigid.velocity = Vector2.zero;
-        }       
+        }
     }
 
     public void SetCurrentCheckpoint(Checkpoint newCurrentCheckpoint)
     {
         currentCheckpoint = newCurrentCheckpoint;
+    }
+
+    //Shooting Test
+    private void Shoot() {
+        if (Input.GetButtonDown("Fire1") && Time.time > nextFire) {
+
+            nextFire = Time.time + fireRate;
+            Fire();
+        }
+    }
+
+    private void LateUpdate()
+    {
+        Vector2 localscale = transform.localScale;
+        if (horizontalInput > 0) {
+            facingRight = true;
+        } else if (horizontalInput < 0) {
+            facingRight = false;
+        }
+        if (((facingRight) && (localscale.x < 0)) || (facingRight) && (localscale.x > 0)){
+            localscale.x *= -1;
+        }
+        transform.localScale = localscale;
+    }
+
+    private void Fire()
+    {
+        BulletPos = transform.position;
+
+        if (facingRight)
+        {
+            BulletPos += new Vector2(+1f, -0.01f);
+            Instantiate(BulletRight, BulletPos, Quaternion.identity);
+        }
+        else
+        {
+            BulletPos += new Vector2(-1f, 0.01f);
+            Instantiate(BulletLeft, BulletPos, Quaternion.identity);
+        }
     }
 
 }
