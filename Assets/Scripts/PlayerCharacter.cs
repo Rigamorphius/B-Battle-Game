@@ -31,23 +31,29 @@ public class PlayerCharacter : MonoBehaviour
     private Collider2D playerGroundCollider;
 
     private float horizontalInput;
-    private bool onGround;
+
+    //animation piece
+    public bool onGround;
+    //public Transform groundCheck;
+   // float groundRadius = 0.2f;
+   // public LayerMask whatIsGround;
+
     private Collider2D[] groundHitDetection = new Collider2D[20];
     private Checkpoint currentCheckpoint;
 
-    //Bullet Testing
+
     public GameObject BulletLeft, BulletRight;
     private Vector2 BulletPos;
     public float fireRate;
     private float nextFire;
      private bool facingRight = true;
-     private float velX;
+     public float velX;
+    Animator anim;
 
     // Use this for initialization
     void Start()
     {
-
-        //Debug.Log("This is start!");
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -61,8 +67,24 @@ public class PlayerCharacter : MonoBehaviour
 
     private void FixedUpdate()
     {
-        UpdatePhysiceMaterial();
-        Move();
+        //onGround = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
+       // anim.SetBool("Ground", onGround);
+
+        UpdatePhysicsMaterial();
+        Move();       
+
+        anim.SetFloat("Speed", Mathf.Abs(horizontalInput));
+        
+
+        if (horizontalInput > 0 && !facingRight)
+        {
+            Flip();
+        }
+        else if (horizontalInput < 0 && facingRight)
+        {
+            Flip();
+
+        }
     }
 
     private void GetMovementInput()
@@ -71,6 +93,7 @@ public class PlayerCharacter : MonoBehaviour
 
     }
 
+ 
     private void Move()
     {
         CharacterRigid.AddForce(Vector2.right * horizontalInput * accelerationForce);
@@ -79,21 +102,21 @@ public class PlayerCharacter : MonoBehaviour
         CharacterRigid.velocity = clampedVelocity;
     }
 
-    private void GetJump()
+   private void GetJump()
     {
         if (Input.GetButtonDown("Jump") && onGround)
-        {
-            CharacterRigid.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+       {
+           CharacterRigid.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
-    }
+   }
 
-    private void IsOnGround()
-    {
+   private void IsOnGround()
+   {
         onGround = groundDetectTrigger.OverlapCollider(groundContactFilter, groundHitDetection) > 0;
-        //Debug.Log("IsOnGround?: " + onGround);
+       // Debug.Log("IsOnGround?: " + onGround);
     }
 
-    private void UpdatePhysiceMaterial()
+    private void UpdatePhysicsMaterial()
     {
         if (Mathf.Abs(horizontalInput) > 0)
         {
@@ -121,7 +144,6 @@ public class PlayerCharacter : MonoBehaviour
         currentCheckpoint = newCurrentCheckpoint;
     }
 
-    //Shooting Test
     private void Shoot() {
         if (Input.GetButtonDown("Fire1") && Time.time > nextFire) {
 
@@ -130,18 +152,12 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
-    {
-        Vector2 localscale = transform.localScale;
-        if (horizontalInput > 0) {
-            facingRight = true;
-        } else if (horizontalInput < 0) {
-            facingRight = false;
-        }
-        if (((facingRight) && (localscale.x < 0)) || (facingRight) && (localscale.x > 0)){
-            localscale.x *= -1;
-        }
-        transform.localScale = localscale;
+   private void Flip()
+   {
+        facingRight = !facingRight;
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
     }
 
     private void Fire()

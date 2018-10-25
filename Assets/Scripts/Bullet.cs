@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour {
 
-    public float velX;
-    public float velY;
+    public float velX = 5f;
+    private float velY;
     private Rigidbody2D RB;
 
 	// Use this for initialization
