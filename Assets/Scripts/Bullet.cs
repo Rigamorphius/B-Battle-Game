@@ -7,9 +7,10 @@ public class Bullet : MonoBehaviour {
     public float velX = 5f;
     private float velY;
     private Rigidbody2D RB;
+    public bool hitGround;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         RB = GetComponent<Rigidbody2D>();
 	}
 	
@@ -17,5 +18,8 @@ public class Bullet : MonoBehaviour {
 	void Update () {
         RB.velocity = new Vector2(velX, velY);
         Destroy(gameObject, 3f);
+    }
+ 
+
 	}
-}
+

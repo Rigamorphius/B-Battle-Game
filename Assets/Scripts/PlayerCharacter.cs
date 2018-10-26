@@ -6,6 +6,18 @@ using UnityEngine.SceneManagement;
 public class PlayerCharacter : MonoBehaviour
 {
 
+    private Collider2D[] groundHitDetection = new Collider2D[20];
+    private Checkpoint currentCheckpoint;
+    public GameObject BulletLeft, BulletRight;
+    private Vector2 BulletPos;
+    public float fireRate;
+    private float nextFire;
+    private bool facingRight = true;
+
+
+    Animator anim;
+   public bool onGround;
+
     [SerializeField]
     private Rigidbody2D CharacterRigid;
 
@@ -32,23 +44,10 @@ public class PlayerCharacter : MonoBehaviour
 
     private float horizontalInput;
 
-    //animation piece
-    public bool onGround;
-    //public Transform groundCheck;
-   // float groundRadius = 0.2f;
-   // public LayerMask whatIsGround;
-
-    private Collider2D[] groundHitDetection = new Collider2D[20];
-    private Checkpoint currentCheckpoint;
+    
 
 
-    public GameObject BulletLeft, BulletRight;
-    private Vector2 BulletPos;
-    public float fireRate;
-    private float nextFire;
-     private bool facingRight = true;
-     public float velX;
-    Animator anim;
+
 
     // Use this for initialization
     void Start()
@@ -67,9 +66,8 @@ public class PlayerCharacter : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //onGround = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
-       // anim.SetBool("Ground", onGround);
-
+       
+        anim.SetBool("onGround", onGround);
         UpdatePhysicsMaterial();
         Move();       
 
@@ -107,13 +105,13 @@ public class PlayerCharacter : MonoBehaviour
         if (Input.GetButtonDown("Jump") && onGround)
        {
            CharacterRigid.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        }
+       }
    }
 
    private void IsOnGround()
    {
         onGround = groundDetectTrigger.OverlapCollider(groundContactFilter, groundHitDetection) > 0;
-       // Debug.Log("IsOnGround?: " + onGround);
+       //Debug.Log("IsOnGround?: " + onGround);
     }
 
     private void UpdatePhysicsMaterial()
