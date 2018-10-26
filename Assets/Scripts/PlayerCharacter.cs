@@ -44,8 +44,6 @@ public class PlayerCharacter : MonoBehaviour
 
     private float horizontalInput;
 
-    
-
 
 
 
@@ -69,8 +67,7 @@ public class PlayerCharacter : MonoBehaviour
        
         anim.SetBool("onGround", onGround);
         UpdatePhysicsMaterial();
-        Move();       
-
+        Move();
         anim.SetFloat("Speed", Mathf.Abs(horizontalInput));
         
 
@@ -139,7 +136,13 @@ public class PlayerCharacter : MonoBehaviour
 
     public void SetCurrentCheckpoint(Checkpoint newCurrentCheckpoint)
     {
-        currentCheckpoint = newCurrentCheckpoint;
+        if(currentCheckpoint != null) 
+            currentCheckpoint.SetIsActivated(false);
+
+            currentCheckpoint = newCurrentCheckpoint;
+            currentCheckpoint.SetIsActivated(true);
+        
+        
     }
 
     private void Shoot() {
@@ -173,5 +176,7 @@ public class PlayerCharacter : MonoBehaviour
             Instantiate(BulletLeft, BulletPos, Quaternion.identity);
         }
     }
+
+    
 
 }

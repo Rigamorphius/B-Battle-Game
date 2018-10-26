@@ -5,9 +5,8 @@ using UnityEngine;
 public class Bullet : MonoBehaviour {
 
     public float velX = 5f;
-    private float velY;
+    private float velY = 0;
     private Rigidbody2D RB;
-    public bool hitGround;
 
     // Use this for initialization
     void Start () {
