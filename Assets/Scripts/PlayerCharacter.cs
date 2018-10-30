@@ -13,7 +13,7 @@ public class PlayerCharacter : MonoBehaviour
     public float fireRate;
     private float nextFire;
     private bool facingRight = true;
-
+    private float horizontalInput;
 
     Animator anim;
    public bool onGround;
@@ -41,11 +41,6 @@ public class PlayerCharacter : MonoBehaviour
 
     [SerializeField]
     private Collider2D playerGroundCollider;
-
-    private float horizontalInput;
-
-
-
 
     // Use this for initialization
     void Start()
@@ -80,6 +75,7 @@ public class PlayerCharacter : MonoBehaviour
             Flip();
 
         }
+
     }
 
     private void GetMovementInput()
@@ -105,7 +101,7 @@ public class PlayerCharacter : MonoBehaviour
        }
    }
 
-   private void IsOnGround()
+    private void IsOnGround()
    {
         onGround = groundDetectTrigger.OverlapCollider(groundContactFilter, groundHitDetection) > 0;
        //Debug.Log("IsOnGround?: " + onGround);
