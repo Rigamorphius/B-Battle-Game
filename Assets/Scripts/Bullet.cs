@@ -16,9 +16,13 @@ public class Bullet : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         RB.velocity = new Vector2(velX, velY);
-        Destroy(gameObject, 3f);
+        Destroy(gameObject, 1f);
     }
- 
 
-	}
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+       
+    }
+
+}
 
