@@ -7,18 +7,20 @@ public class Checkpoint : MonoBehaviour {
 
     private bool isActivated = false;
     private SpriteRenderer spriteRenderer;
+    private AudioSource audioSource;
 
     [SerializeField]
     private float inactivatedRotationSpeed = 100, activatedRotationSpeed = 300;
 
     [SerializeField]
-    private float inactivatedScale = 1, activatedScale = 1.5f;
+    private float inactivatedScale = 1, activatedScale = 2f;
 
     [SerializeField]
-    private Color inactivatedColor, activatedColor;
+    private Color inactivatedColor, activatedColor;  
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         UpdateColor();
     }
@@ -29,11 +31,12 @@ public class Checkpoint : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && !isActivated)
         {
-            Debug.Log("Player entered the checkpoint");
+            //Debug.Log("Player entered the checkpoint");
             PlayerCharacter player = collision.GetComponent<PlayerCharacter>();
             player.SetCurrentCheckpoint(this);
+            audioSource.Play();
         }
     }
 

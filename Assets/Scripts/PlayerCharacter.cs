@@ -14,6 +14,7 @@ public class PlayerCharacter : MonoBehaviour
     private float nextFire;
     private bool facingRight = true;
     private float horizontalInput;
+    private bool isDead;
 
     Animator anim;
    public bool onGround;
@@ -64,7 +65,7 @@ public class PlayerCharacter : MonoBehaviour
         UpdatePhysicsMaterial();
         Move();
         anim.SetFloat("Speed", Mathf.Abs(horizontalInput));
-        
+        anim.SetBool("isDead",isDead);
 
         if (horizontalInput > 0 && !facingRight)
         {
@@ -87,15 +88,19 @@ public class PlayerCharacter : MonoBehaviour
  
     private void Move()
     {
-        CharacterRigid.AddForce(Vector2.right * horizontalInput * accelerationForce);
-        Vector2 clampedVelocity = CharacterRigid.velocity;
-        clampedVelocity.x = Mathf.Clamp(CharacterRigid.velocity.x, -maxSpeed, maxSpeed);
-        CharacterRigid.velocity = clampedVelocity;
+        if (!isDead)
+        {
+            CharacterRigid.AddForce(Vector2.right * horizontalInput * accelerationForce);
+            Vector2 clampedVelocity = CharacterRigid.velocity;
+            clampedVelocity.x = Mathf.Clamp(CharacterRigid.velocity.x, -maxSpeed, maxSpeed);
+            CharacterRigid.velocity = clampedVelocity;
+        }
+        
     }
 
    private void GetJump()
     {
-        if (Input.GetButtonDown("Jump") && onGround)
+        if (Input.GetButtonDown("Jump") && onGround && !isDead)
        {
            CharacterRigid.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
        }
@@ -120,6 +125,7 @@ public class PlayerCharacter : MonoBehaviour
     }
 
     public void Respawn() {
+       
         if (currentCheckpoint == null)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -127,8 +133,21 @@ public class PlayerCharacter : MonoBehaviour
         else {
             transform.position = currentCheckpoint.transform.position;
             CharacterRigid.velocity = Vector2.zero;
+            isDead = false;
         }
     }
+
+    private void CheckRespawn()
+    {
+        if (isDead && Input.GetButtonDown("Respawn")) {
+            Respawn();
+        }
+    }
+
+    public void Die() {
+        isDead = true;
+    }
+
 
     public void SetCurrentCheckpoint(Checkpoint newCurrentCheckpoint)
     {
