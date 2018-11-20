@@ -56,6 +56,7 @@ public class PlayerCharacter : MonoBehaviour
         GetJump();
         IsOnGround();
         Shoot();
+        CheckRespawn();
     }
 
     private void FixedUpdate()
