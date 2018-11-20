@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Checkpoint : MonoBehaviour {
+public class Checkpoint : MonoBehaviour
+{
 
     private bool isActivated = false;
     private SpriteRenderer spriteRenderer;
@@ -16,7 +17,7 @@ public class Checkpoint : MonoBehaviour {
     private float inactivatedScale = 1, activatedScale = 2f;
 
     [SerializeField]
-    private Color inactivatedColor, activatedColor;  
+    private Color inactivatedColor, activatedColor;
 
     private void Start()
     {
@@ -25,7 +26,8 @@ public class Checkpoint : MonoBehaviour {
         UpdateColor();
     }
 
-    private void Update() {
+    private void Update()
+    {
         UpdateRotation();
     }
 
@@ -40,23 +42,27 @@ public class Checkpoint : MonoBehaviour {
         }
     }
 
-    public void SetIsActivated(bool value) {
+    public void SetIsActivated(bool value)
+    {
         isActivated = value;
         UpdateScale();
         UpdateColor();
     }
 
-    private void UpdateRotation() {
+    private void UpdateRotation()
+    {
         float rotationSpeed = inactivatedRotationSpeed;
 
-        if (isActivated) {
+        if (isActivated)
+        {
             rotationSpeed = activatedRotationSpeed;
         }
 
         transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
     }
 
-    private void UpdateScale() {
+    private void UpdateScale()
+    {
         float scale = inactivatedScale;
 
         if (isActivated)
@@ -64,9 +70,10 @@ public class Checkpoint : MonoBehaviour {
             scale = activatedScale;
         }
         transform.localScale = Vector3.one * scale;
-   }
+    }
 
-    private void UpdateColor() {
+    private void UpdateColor()
+    {
         Color color = inactivatedColor;
 
         if (isActivated)

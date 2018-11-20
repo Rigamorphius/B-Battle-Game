@@ -15,9 +15,9 @@ public class PlayerCharacter : MonoBehaviour
     private bool facingRight = true;
     private float horizontalInput;
     private bool isDead;
-
     Animator anim;
-   public bool onGround;
+
+    public bool onGround;
 
     [SerializeField]
     private Rigidbody2D CharacterRigid;
@@ -43,13 +43,13 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField]
     private Collider2D playerGroundCollider;
 
-    // Use this for initialization
+
     void Start()
     {
         anim = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         GetMovementInput();
@@ -61,12 +61,12 @@ public class PlayerCharacter : MonoBehaviour
 
     private void FixedUpdate()
     {
-       
+
         anim.SetBool("onGround", onGround);
         UpdatePhysicsMaterial();
         Move();
         anim.SetFloat("Speed", Mathf.Abs(horizontalInput));
-        anim.SetBool("isDead",isDead);
+        anim.SetBool("isDead", isDead);
 
         if (horizontalInput > 0 && !facingRight)
         {
@@ -86,7 +86,7 @@ public class PlayerCharacter : MonoBehaviour
 
     }
 
- 
+
     private void Move()
     {
         if (!isDead)
@@ -96,21 +96,21 @@ public class PlayerCharacter : MonoBehaviour
             clampedVelocity.x = Mathf.Clamp(CharacterRigid.velocity.x, -maxSpeed, maxSpeed);
             CharacterRigid.velocity = clampedVelocity;
         }
-        
+
     }
 
-   private void GetJump()
+    private void GetJump()
     {
         if (Input.GetButtonDown("Jump") && onGround && !isDead)
-       {
-           CharacterRigid.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-       }
-   }
+        {
+            CharacterRigid.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        }
+    }
 
     private void IsOnGround()
-   {
+    {
         onGround = groundDetectTrigger.OverlapCollider(groundContactFilter, groundHitDetection) > 0;
-       //Debug.Log("IsOnGround?: " + onGround);
+        //Debug.Log("IsOnGround?: " + onGround);
     }
 
     private void UpdatePhysicsMaterial()
@@ -125,13 +125,15 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
-    public void Respawn() {
-       
+    public void Respawn()
+    {
+
         if (currentCheckpoint == null)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
-        else {
+        else
+        {
             transform.position = currentCheckpoint.transform.position;
             CharacterRigid.velocity = Vector2.zero;
             isDead = false;
@@ -140,59 +142,69 @@ public class PlayerCharacter : MonoBehaviour
 
     private void CheckRespawn()
     {
-        if (isDead && Input.GetButtonDown("Respawn")) {
+        if (isDead && Input.GetButtonDown("Respawn"))
+        {
             Respawn();
         }
     }
 
-    public void Die() {
+    public void Die()
+    {
         isDead = true;
     }
 
 
     public void SetCurrentCheckpoint(Checkpoint newCurrentCheckpoint)
     {
-        if(currentCheckpoint != null) 
+        if (currentCheckpoint != null)
             currentCheckpoint.SetIsActivated(false);
 
-            currentCheckpoint = newCurrentCheckpoint;
-            currentCheckpoint.SetIsActivated(true);
-        
-        
+        currentCheckpoint = newCurrentCheckpoint;
+        currentCheckpoint.SetIsActivated(true);
+
+
     }
 
-    private void Shoot() {
-        if (Input.GetButtonDown("Fire1") && Time.time > nextFire) {
-
+    private void Shoot()
+    {
+        if (Input.GetButtonDown("Fire1") && Time.time > nextFire)
+        {
             nextFire = Time.time + fireRate;
             Fire();
         }
     }
 
-   private void Flip()
-   {
-        facingRight = !facingRight;
-        Vector3 theScale = transform.localScale;
-        theScale.x *= -1;
-        transform.localScale = theScale;
+    private void Flip()
+    {
+        if (!isDead)
+        {
+            facingRight = !facingRight;
+            Vector3 theScale = transform.localScale;
+            theScale.x *= -1;
+            transform.localScale = theScale;
+        }
     }
 
     private void Fire()
     {
         BulletPos = transform.position;
 
-        if (facingRight)
+        if (!isDead)
         {
-            BulletPos += new Vector2(+1f, -0.01f);
-            Instantiate(BulletRight, BulletPos, Quaternion.identity);
+            if (facingRight)
+            {
+                BulletPos += new Vector2(+1f, -0.01f);
+                Instantiate(BulletRight, BulletPos, Quaternion.identity);
+            }
+            else
+            {
+                BulletPos += new Vector2(-1f, 0.01f);
+                Instantiate(BulletLeft, BulletPos, Quaternion.identity);
+            }
         }
-        else
-        {
-            BulletPos += new Vector2(-1f, 0.01f);
-            Instantiate(BulletLeft, BulletPos, Quaternion.identity);
-        }
+
     }
 
-    
+
 
 }

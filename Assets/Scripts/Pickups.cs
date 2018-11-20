@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pickups : MonoBehaviour {
+public class Pickups : MonoBehaviour
+{
     private AudioSource audioSource;
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D boxCollider2D;
@@ -33,7 +34,8 @@ public class Pickups : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player")) {
+        if (collision.gameObject.CompareTag("Player"))
+        {
             audioSource.Play();
             spriteRenderer.enabled = false;
             boxCollider2D.enabled = false;
