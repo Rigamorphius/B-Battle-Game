@@ -8,11 +8,13 @@ public class Bullet : MonoBehaviour
     public float velX = 5f;
     private float velY = 0;
     private Rigidbody2D RB;
+    private CompositeCollider2D compositeCollider;
 
     // Use this for initialization
     void Start()
     {
         RB = GetComponent<Rigidbody2D>();
+        compositeCollider = GetComponent<CompositeCollider2D>();
     }
 
     // Update is called once per frame
@@ -24,7 +26,9 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
+        if (collision.gameObject.CompareTag("Floor")) {
+            Destroy(gameObject);
+        }
     }
 
 }

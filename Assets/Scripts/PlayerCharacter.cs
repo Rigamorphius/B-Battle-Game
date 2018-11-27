@@ -16,6 +16,7 @@ public class PlayerCharacter : MonoBehaviour
     private float horizontalInput;
     private bool isDead;
     Animator anim;
+    private AudioSource audioSource;
 
     public bool onGround;
 
@@ -46,6 +47,7 @@ public class PlayerCharacter : MonoBehaviour
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
     }
 
@@ -151,6 +153,7 @@ public class PlayerCharacter : MonoBehaviour
     public void Die()
     {
         isDead = true;
+        audioSource.Play();
     }
 
 
