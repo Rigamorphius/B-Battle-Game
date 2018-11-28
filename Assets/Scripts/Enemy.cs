@@ -25,12 +25,10 @@ public class Enemy : MonoBehaviour {
            
             isDead = true;
             audioSource.Play();           
-            spriteRenderer.enabled = false;
             boxCollider2D.enabled = false;           
             enemyCount++;
             Debug.Log("Enemies defeated is = " + enemyCount);
             anim.SetBool("isDead", isDead);
-            Destroy(gameObject, audioSource.clip.length);
             Destroy(collision.gameObject);                  
         }
     }
