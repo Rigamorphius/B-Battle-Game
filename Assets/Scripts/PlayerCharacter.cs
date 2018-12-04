@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 public class PlayerCharacter : MonoBehaviour
 {
 
@@ -17,6 +16,7 @@ public class PlayerCharacter : MonoBehaviour
     private bool isDead;
     Animator anim;
     private AudioSource audioSource;
+  
 
     public bool onGround;
 

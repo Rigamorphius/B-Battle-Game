@@ -24,12 +24,13 @@ public class Enemy : MonoBehaviour {
         {
            
             isDead = true;
-            audioSource.Play();           
+            audioSource.Play();
             boxCollider2D.enabled = false;           
             enemyCount++;
             Debug.Log("Enemies defeated is = " + enemyCount);
             anim.SetBool("isDead", isDead);
-            Destroy(collision.gameObject);                  
+            Destroy(collision.gameObject);
+            
         }
     }
 }

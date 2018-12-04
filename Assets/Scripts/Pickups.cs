@@ -40,7 +40,7 @@ public class Pickups : MonoBehaviour
             spriteRenderer.enabled = false;
             boxCollider2D.enabled = false;
             Destroy(gameObject, audioSource.clip.length);
-            gemCount++;
+            gemCount = gemCount + 1;
             Debug.Log("Gems Collected is = " + gemCount);
         }
     }
