@@ -22,6 +22,7 @@ public class Bullet : MonoBehaviour
     {
         RB.velocity = new Vector2(velX, velY);
         Destroy(gameObject, 1f);
+        transform.Rotate(new Vector3(0, 0, 1000) * Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
