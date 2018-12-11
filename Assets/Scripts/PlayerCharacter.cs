@@ -88,7 +88,6 @@ public class PlayerCharacter : MonoBehaviour
 
     }
 
-
     private void Move()
     {
         if (!isDead)
@@ -112,7 +111,6 @@ public class PlayerCharacter : MonoBehaviour
     private void IsOnGround()
     {
         onGround = groundDetectTrigger.OverlapCollider(groundContactFilter, groundHitDetection) > 0;
-        //Debug.Log("IsOnGround?: " + onGround);
     }
 
     private void UpdatePhysicsMaterial()
@@ -156,7 +154,6 @@ public class PlayerCharacter : MonoBehaviour
         audioSource.Play();
     }
 
-
     public void SetCurrentCheckpoint(Checkpoint newCurrentCheckpoint)
     {
         if (currentCheckpoint != null)
@@ -164,8 +161,6 @@ public class PlayerCharacter : MonoBehaviour
 
         currentCheckpoint = newCurrentCheckpoint;
         currentCheckpoint.SetIsActivated(true);
-
-
     }
 
     private void Shoot()
@@ -207,7 +202,4 @@ public class PlayerCharacter : MonoBehaviour
         }
 
     }
-
-
-
 }

@@ -5,19 +5,17 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
 
-    public float velX = 5f;
-    private float velY = 0;
+    public float velX;
+    private float velY;
     private Rigidbody2D RB;
     private CompositeCollider2D compositeCollider;
 
-    // Use this for initialization
     void Start()
     {
         RB = GetComponent<Rigidbody2D>();
         compositeCollider = GetComponent<CompositeCollider2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         RB.velocity = new Vector2(velX, velY);
@@ -31,6 +29,4 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
 }
-

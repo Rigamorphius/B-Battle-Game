@@ -42,9 +42,9 @@ public class Checkpoint : MonoBehaviour
         }
     }
 
-    public void SetIsActivated(bool value)
+    public void SetIsActivated(bool Activated)
     {
-        isActivated = value;
+        isActivated = Activated;
         UpdateScale();
         UpdateColor();
     }
