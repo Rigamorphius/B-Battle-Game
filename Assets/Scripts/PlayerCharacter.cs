@@ -16,7 +16,6 @@ public class PlayerCharacter : MonoBehaviour
     private bool isDead;
     Animator anim;
     private AudioSource audioSource;
-  
 
     public bool onGround;
 
@@ -145,6 +144,7 @@ public class PlayerCharacter : MonoBehaviour
         if (isDead && Input.GetButtonDown("Respawn"))
         {
             Respawn();
+
         }
     }
 
